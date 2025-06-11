@@ -1,0 +1,90 @@
+
+
+
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import org.bson.Document;
+
+public class ProductPriceFilter {
+    public static void main(String[] args) {
+        MongoClient mongoClient = MongoClients.create();
+        MongoDatabase database = mongoClient.getDatabase("vit");
+        MongoCollection<Document> collection = database.getCollection("products");
+
+        Document priceRangeQuery = new Document("price", new Document("$gte", 700).append("$lte", 900));
+        FindIterable<Document> products = collection.find(priceRangeQuery);
+
+        for (Document product : products) {
+            System.out.println(product.toJson());
+        }
+
+        mongoClient.close();
+    }
+}
+
+
+import com.mongodb.client.AggregateIterable;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.MongoCollection;
+import org.bson.Document;
+import java.util.Arrays;
+
+public class AveragePriceAggregation {
+    public static void main(String[] args) {
+        MongoClient mongoClient = MongoClients.create();
+        MongoDatabase database = mongoClient.getDatabase("vit");
+        MongoCollection<Document> collection = database.getCollection("products");
+
+        AggregateIterable<Document> avgResult = collection.aggregate(Arrays.asList(
+                new Document("$group", new Document("_id", null)
+                        .append("averagePrice", new Document("$avg", "$price")))
+        ));
+
+        for (Document doc : avgResult) {
+            System.out.println("Average Price: " + doc.getDouble("averagePrice"));
+        }
+
+        mongoClient.close();
+    }
+}
+
+
+package connection;
+import org.bson.Document;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import static com.mongodb.client.model.Aggregates.*;
+import static com.mongodb.client.model.Accumulators.*;
+import static com.mongodb.client.model.Sorts.*;
+import java.util.Arrays;
+
+public class MongoDB {
+    public static void main(String[] args) {
+        try (MongoClient mongo = MongoClients.create("mongodb://localhost:27017")) {
+            MongoDatabase db = mongo.getDatabase("vit");
+            MongoCollection<Document> sales = db.getCollection("sales");
+
+            sales.aggregate(Arrays.asList(
+                group("$item", 
+                    max("maxPrice", "$price"),
+                    addToSet("sizes", "$size")
+                ),
+                sort(descending("maxPrice"))
+            )).forEach((Document doc) -> {
+                System.out.printf("%-10s: $%2d (Sizes: %s)%n",
+                    doc.getString("_id"),
+                    doc.getInteger("maxPrice"),
+                    doc.getList("sizes", String.class));
+            });
+        }
+    }
+}
+
+
+
