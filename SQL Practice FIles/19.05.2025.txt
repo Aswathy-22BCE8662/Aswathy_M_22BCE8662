@@ -1,0 +1,78 @@
+show databases;
+drop database school;
+use vit;
+show tables from vit;
+
+#drop
+drop table student;
+desc teachers;
+alter table teachers drop column t_dept;
+create table workers (
+    id int primary key,
+    fname varchar(50),
+    lname varchar(50),
+    salary decimal(10,2),
+    joining_date date,
+    department varchar(50));
+
+insert into workers values (1, 'john', 'doe', 50000.00, '2021-01-15', 'sales');
+insert into workers values (2, 'jane', 'smith', 60000.00, '2020-06-10', 'marketing');
+insert into workers values (3, 'michael', 'brown', 55000.00, '2019-09-23', 'hr');
+insert into workers values (4, 'emily', 'davis', 62000.00, '2022-03-01', 'it');
+insert into workers values (5, 'david', 'wilson', 58000.00, '2018-11-30', 'finance');
+
+select * from workers;
+
+#delete
+delete from workers where id=1;
+delete from worker;
+delete from worker where salary<=520000;
+delete from worker where department='marketing';
+delete from worker where date='2022-03-01';
+
+#truncate
+truncate table workers;
+
+create database vit;
+drop database vit;
+use vit;
+create table cse (id int,name varchar(25));
+
+#savepoint,rollback
+start transaction ;
+insert into cse values (1,'Ash');
+savepoint a1;
+insert into cse values (2,'esha');
+savepoint a2;
+insert into cse values (3,'rud');
+delete from sce where id=2;
+
+select * from cse;
+rollback to a2;
+select * from cse;
+
+select fname,department from workers;
+select fname as employee_name from workers;
+ desc workers;
+ 
+ #operators
+ select * from workers;
+ select fname,department from workers where salary >=30000;
+ select fname from workers where salary <70000;
+ select department from workers where fname='john';
+ select * from workers where fname='jane' and depatment='it';
+ select * from workers where fname='emily' or department='it';
+ select * from workers where fname='david' and department in('it','hr');
+  select * from workers where fname='jane' and deparrtment not in('it','hr');
+  
+  select * from workers where salary>30000 and department not in('it','hr');
+  
+drop table workers;
+
+ 
+
+
+
+
+
+
