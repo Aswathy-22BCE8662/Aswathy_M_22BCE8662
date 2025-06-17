@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Library - Book Collection</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+    <style>
+        body {
+            background-color: #f9f9f9;
+        }
+        .card {
+            transition: transform 0.2s ease;
+        }
+        .card:hover {
+            transform: translateY(-4px);
+        }
+        .card-img-top {
+            width: 100%;
+            height: 200px; /* Fixed height for covers */
+            object-fit: cover; /* Ensures images cover the area without distortion */
+            border-bottom: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+
+<!-- The client-side redirect logic has been moved to the server-side in book_routes.py -->
+<!-- This script block is no longer needed here -->
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <a class="navbar-brand" href="{{ url_for('book.dashboard') }}">📚 Library</a>
+        <div class="collapse navbar-collapse justify-content-end">
+            <ul class="navbar-nav">
+                {% if user.is_authenticated and user.role == 'librarian' %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('book.add_book') }}">Add Book</a>
+                </li>
+                {% endif %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('book.dashboard') }}">Dashboard</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('auth.logout') }}">Logout</a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container mt-4">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="container mt-3">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <h2 class="mb-4">Book Collection</h2>
+    <div class="row">
+        {% for book in books %}
+        <div class="col-md-4 col-sm-6 mb-4">
+            <div class="card shadow-sm h-100">
+                <!-- Fallback for missing images -->
+                <img src="{{ url_for('static', filename='images/' + book.cover) }}"
+                     onerror="this.onerror=null;this.src='https://placehold.co/400x200/cccccc/333333?text=No+Cover';"
+                     class="card-img-top" alt="Book Cover">
+                <div class="card-body">
+                    <h5 class="card-title">{{ book.title }}</h5>
+                    <p class="card-text">
+                        <strong>Author:</strong> {{ book.author }}<br>
+                        <strong>Category:</strong> {{ book.category }}<br>
+                        <strong>Year:</strong> {{ book.year }}
+                    </p>
+                    {% if user.is_authenticated and user.role == 'librarian' %}
+                    <div class="d-flex justify-content-between">
+                        <a href="{{ url_for('book.edit_book', id=book._id) }}"
+                           class="btn btn-outline-primary btn-sm">Edit</a>
+                        <a href="{{ url_for('book.delete_book', id=book._id) }}"
+                           class="btn btn-outline-danger btn-sm"
+                           onclick="return confirm('Are you sure you want to delete this book?');">Delete</a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="col-12">
+            <p>No books available in the collection.</p>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
