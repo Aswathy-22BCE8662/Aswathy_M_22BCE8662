@@ -1,0 +1,495 @@
+use admin
+switched to db admin
+use vit
+switched to db vit
+show collections
+student
+Student
+db.Student.drop()
+true
+show collections
+student
+db.student.find()
+{
+  _id: ObjectId('6835cfc7e883ca33199e0f78'),
+  name: 'Ash',
+  company: 'vit'
+}
+{
+  _id: ObjectId('6835d00ee883ca33199e0f79'),
+  name: 'Esh',
+  company: 'vit'
+}
+{
+  _id: ObjectId('6835d04fe883ca33199e0f7a'),
+  name: 'Rud',
+  company: 'chennai'
+}
+{
+  _id: ObjectId('6835d04fe883ca33199e0f7b'),
+  name: 'Ras',
+  company: 'Vellore'
+}
+db.student.insertOne({ stringField: "Hello, MongoDB",  intField: 42,  doubleField: 3.14159,   booleanField: true , dateField: new Date("2025-05-28T00:00:00Z"), 
+  arrayField: [1, 2, 3, "four", true], timestampField: Timestamp()
+})
+{
+  acknowledged: true,
+  insertedId: ObjectId('683708750f95adb6dafe1772')
+}
+db.student.insertMany(
+   [{ _id: 3, title:  "SQL Performance Tuning", isbn: "0-6799-2974-6"},
+   { _id: 3, title:  "SQL Trees", isbn: "0-6998-1556-8"},
+   { _id: 4, title:  "SQL Graph", isbn: "0-6426-4996-0"},
+   { _id: 5, title:  "NoSQL Pros", isbn: "0-9602-9886-X"}], 
+   { ordered: false }
+)db.createCollection("books")
+{ ok: 1 }
+db.books.insertMany([
+  {
+    title: "Intro to Databases",
+    author: "Alice",
+    pages: 250,                           // Integer
+    price: 499.99,                        // Double
+    inStock: true,                        // Boolean
+    genres: ["Education", "Technology"], // Array
+    publishDate: new Date("2023-01-15")  // Date
+  },
+  {
+    title: "Advanced MongoDB",
+    author: "Bob",
+    pages: 320,
+    price: 799.50,
+    inStock: false,
+    genres: ["Technology", "Databases"],
+    publishDate: new Date("2024-08-22")
+  },
+  {
+    title: "Learning JavaScript",
+    author: "Charlie",
+    pages: 180,
+    price: 299.75,
+    inStock: true,
+    genres: ["Programming", "Web"],
+    publishDate: new Date("2022-05-10")
+  }
+])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': ObjectId('68370a160f95adb6dafe1773'),
+    '1': ObjectId('68370a160f95adb6dafe1774'),
+    '2': ObjectId('68370a160f95adb6dafe1775')
+  }
+}
+db.student.find()
+{
+  _id: ObjectId('6835cfc7e883ca33199e0f78'),
+  name: 'Ash',
+  company: 'vit'
+}
+{
+  _id: ObjectId('6835d00ee883ca33199e0f79'),
+  name: 'Esh',
+  company: 'vit'
+}
+{
+  _id: ObjectId('6835d04fe883ca33199e0f7a'),
+  name: 'Rud',
+  company: 'chennai'
+}
+{
+  _id: ObjectId('6835d04fe883ca33199e0f7b'),
+  name: 'Ras',
+  company: 'Vellore'
+}
+{
+  _id: ObjectId('683708750f95adb6dafe1772'),
+  stringField: 'Hello, MongoDB',
+  intField: 42,
+  doubleField: 3.14159,
+  booleanField: true,
+  dateField: 2025-05-28T00:00:00.000Z,
+  arrayField: [
+    1,
+    2,
+    3,
+    'four',
+    true
+  ],
+  timestampField: Timestamp({ t: 1748437109, i: 1 })
+}
+{
+  _id: 3,
+  title: 'SQL Performance Tuning',
+  isbn: '0-6799-2974-6'
+}
+{
+  _id: 4,
+  title: 'SQL Graph',
+  isbn: '0-6426-4996-0'
+}
+{
+  _id: 5,
+  title: 'NoSQL Pros',
+  isbn: '0-9602-9886-X'
+}
+{
+  _id: 2,
+  title: 'SQL Performance Tuning',
+  isbn: '0-6799-2974-6'
+}
+db.books.find()
+{
+  _id: ObjectId('68370a160f95adb6dafe1773'),
+  title: 'Intro to Databases',
+  author: 'Alice',
+  pages: 250,
+  price: 499.99,
+  inStock: true,
+  genres: [
+    'Education',
+    'Technology'
+  ],
+  publishDate: 2023-01-15T00:00:00.000Z
+}
+{
+  _id: ObjectId('68370a160f95adb6dafe1774'),
+  title: 'Advanced MongoDB',
+  author: 'Bob',
+  pages: 320,
+  price: 799.5,
+  inStock: false,
+  genres: [
+    'Technology',
+    'Databases'
+  ],
+  publishDate: 2024-08-22T00:00:00.000Z
+}
+{
+  _id: ObjectId('68370a160f95adb6dafe1775'),
+  title: 'Learning JavaScript',
+  author: 'Charlie',
+  pages: 180,
+  price: 299.75,
+  inStock: true,
+  genres: [
+    'Programming',
+    'Web'
+  ],
+  publishDate: 2022-05-10T00:00:00.000Z
+}
+db.record.insertMany([
+  { _id: 1, name: "ash", mark: 85, location: "kerala" },
+  { _id: 2, name: "esh", mark: 78, location: "karnataka" },
+  { _id: 3, name: "ras", mark: 92, location: "delhi" },
+  { _id: 4, name: "sree", mark: 88, location: "banglore" },
+  { _id: 5, name: "rud", mark: 73, location: "chennai" }
+])
+db.record.findOne({_id:2})
+{
+  _id: 2,
+  name: 'esh',
+  mark: 78,
+  location: 'karnataka'
+}
+db.products.insertMany([
+    { "_id" : 1, "name" : "xPhone", "price" : 799, "releaseDate": ISODate("2011-05-14"), "spec" : { "ram" : 4, "screen" : 6.5, "cpu" : 2.66 },"color":["white","black"],"storage":[64,128,256]},
+    { "_id" : 2, "name" : "xTablet", "price" : 899, "releaseDate": ISODate("2011-09-01") , "spec" : { "ram" : 16, "screen" : 9.5, "cpu" : 3.66 },"color":["white","black","purple"],"storage":[128,256,512]},
+    { "_id" : 3, "name" : "SmartTablet", "price" : 899, "releaseDate": ISODate("2015-01-14"), "spec" : { "ram" : 12, "screen" : 9.7, "cpu" : 3.66 },"color":["blue"],"storage":[16,64,128]},
+    { "_id" : 4, "name" : "SmartPad", "price" : 699, "releaseDate": ISODate("2020-05-14"),"spec" : { "ram" : 8, "screen" : 9.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256,1024]},
+    { "_id" : 5, "name" : "SmartPhone", "price" : 599,"releaseDate": ISODate("2022-09-14"), "spec" : { "ram" : 4, "screen" : 5.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256]}
+ ])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': 1,
+    '1': 2,
+    '2': 3,
+    '3': 4,
+    '4': 5
+  }
+}
+db.products.findOne({_id:2})
+{
+  _id: 2,
+  name: 'xTablet',
+  price: 899,
+  releaseDate: 2011-09-01T00:00:00.000Z,
+  spec: {
+    ram: 16,
+    screen: 9.5,
+    cpu: 3.66
+  },
+  color: [
+    'white',
+    'black',
+    'purple'
+  ],
+  storage: [
+    128,
+    256,
+    512
+  ]
+}
+db.products.findOne({_id:1},{name:1})
+{
+  _id: 1,
+  name: 'xPhone'
+}
+db.products.findOne({_id:1},{name:1,_id:0})
+{
+  name: 'xPhone'
+}
+db.products.findOne({name:"SmartPhone"})
+{
+  _id: 5,
+  name: 'SmartPhone',
+  price: 599,
+  releaseDate: 2022-09-14T00:00:00.000Z,
+  spec: {
+    ram: 4,
+    screen: 5.7,
+    cpu: 1.66
+  },
+  color: [
+    'white',
+    'orange',
+    'gold',
+    'gray'
+  ],
+  storage: [
+    128,
+    256
+  ]
+}
+db.books.insertMany([
+	{ "_id" : 1, "title" : "Unlocking Android", "isbn" : "1933988673", "categories" : [ "Open Source", "Mobile" ] },
+	{ "_id" : 2, "title" : "Android in Action, Second Edition", "isbn" : "1935182722", "categories" : [ "Java" ] },
+	{ "_id" : 3, "title" : "Specification by Example", "isbn" : "1617290084", "categories" : [ "Software Engineering" ] },
+	{ "_id" : 4, "title" : "Flex 3 in Action", "isbn" : "1933988746", "categories" : [ "Internet" ] },
+	{ "_id" : 5, "title" : "Flex 4 in Action", "isbn" : "1935182420", "categories" : [ "Internet" ] },
+	{ "_id" : 6, "title" : "Collective Intelligence in Action", "isbn" : "1933988312", "categories" : [ "Internet" ] },
+	{ "_id" : 7, "title" : "Zend Framework in Action", "isbn" : "1933988320", "categories" : [ "Web Development" ] },
+	{ "_id" : 8, "title" : "Flex on Java", "isbn" : "1933988797", "categories" : [ "Internet" ] },
+	{ "_id" : 9, "title" : "Griffon in Action", "isbn" : "1935182234", "categories" : [ "Java" ] },
+	{ "_id" : 10, "title" : "OSGi in Depth", "isbn" : "193518217X", "categories" : [ "Java" ] },
+	{ "_id" : 11, "title" : "Flexible Rails", "isbn" : "1933988509", "categories" : [ "Web Development" ] },
+	{ "_id" : 13, "title" : "Hello! Flex 4", "isbn" : "1933988762", "categories" : [ "Internet" ] },
+	{ "_id" : 14, "title" : "Coffeehouse", "isbn" : "1884777384", "categories" : [ "Miscellaneous" ] },
+	{ "_id" : 15, "title" : "Team Foundation Server 2008 in Action", "isbn" : "1933988592", "categories" : [ "Microsoft .NET" ] },
+	{ "_id" : 16, "title" : "Brownfield Application Development in .NET", "isbn" : "1933988711", "categories" : [ "Microsoft" ] },
+	{ "_id" : 17, "title" : "MongoDB in Action", "isbn" : "1935182870", "categories" : [ "Next Generation Databases" ] },
+	{ "_id" : 18, "title" : "Distributed Application Development with PowerBuilder 6.0", "isbn" : "1884777686", "categories" : [ "PowerBuilder" ] },
+	{ "_id" : 19, "title" : "Jaguar Development with PowerBuilder 7", "isbn" : "1884777864", "categories" : [ "PowerBuilder", "Client-Server" ] },
+	{ "_id" : 20, "title" : "Taming Jaguar", "isbn" : "1884777686", "categories" : [ "PowerBuilder" ] },
+	{ "_id" : 21, "title" : "3D User Interfaces with Java 3D", "isbn" : "1884777902", "categories" : [ "Java", "Computer Graphics" ] },
+	{ "_id" : 22, "title" : "Hibernate in Action", "isbn" : "193239415X", "categories" : [ "Java" ] },
+	{ "_id" : 23, "title" : "Hibernate in Action (Chinese Edition)", "categories" : [ "Java" ] },
+	{ "_id" : 24, "title" : "Java Persistence with Hibernate", "isbn" : "1932394885", "categories" : [ "Java" ] },
+	{ "_id" : 25, "title" : "JSTL in Action", "isbn" : "1930110529", "categories" : [ "Internet" ] },
+	{ "_id" : 26, "title" : "iBATIS in Action", "isbn" : "1932394826", "categories" : [ "Web Development" ] },
+	{ "_id" : 27, "title" : "Designing Hard Software", "isbn" : "133046192", "categories" : [ "Object-Oriented Programming", "S" ] },
+	{ "_id" : 28, "title" : "Hibernate Search in Action", "isbn" : "1933988649", "categories" : [ "Java" ] },
+	{ "_id" : 29, "title" : "jQuery in Action", "isbn" : "1933988355", "categories" : [ "Web Development" ] },
+	{ "_id" : 30, "title" : "jQuery in Action, Second Edition", "isbn" : "1935182323", "categories" : [ "Java" ] }
+]);
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': 1,
+    '1': 2,
+    '2': 3,
+    '3': 4,
+    '4': 5,
+    '5': 6,
+    '6': 7,
+    '7': 8,
+    '8': 9,
+    '9': 10,
+    '10': 11,
+    '11': 13,
+    '12': 14,
+    '13': 15,
+    '14': 16,
+    '15': 17,
+    '16': 18,
+    '17': 19,
+    '18': 20,
+    '19': 21,
+    '20': 22,
+    '21': 23,
+    '22': 24,
+    '23': 25,
+    '24': 26,
+    '25': 27,
+    '26': 28,
+    '27': 29,
+    '28': 30
+  }
+}
+db.books.find({},{name:1})
+{
+  _id: ObjectId('68370a160f95adb6dafe1773')
+}
+{
+  _id: ObjectId('68370a160f95adb6dafe1774')
+}
+{
+  _id: ObjectId('68370a160f95adb6dafe1775')
+}
+{
+  _id: 1
+}
+{
+  _id: 2
+}
+{
+  _id: 3
+}
+{
+  _id: 4
+}
+{
+  _id: 5
+}
+{
+  _id: 6
+}
+{
+  _id: 7
+}
+{
+  _id: 8
+}
+{
+  _id: 9
+}
+{
+  _id: 10
+}
+{
+  _id: 11
+}
+{
+  _id: 13
+}
+{
+  _id: 14
+}
+{
+  _id: 15
+}
+{
+  _id: 16
+}
+{
+  _id: 17
+}
+{
+  _id: 18
+}
+Type "it" for more
+db.books.find({},{title:1,_id:0})
+{
+  title: 'Intro to Databases'
+}
+{
+  title: 'Advanced MongoDB'
+}
+{
+  title: 'Learning JavaScript'
+}
+{
+  title: 'Unlocking Android'
+}
+{
+  title: 'Android in Action, Second Edition'
+}
+{
+  title: 'Specification by Example'
+}
+{
+  title: 'Flex 3 in Action'
+}
+{
+  title: 'Flex 4 in Action'
+}
+{
+  title: 'Collective Intelligence in Action'
+}
+{
+  title: 'Zend Framework in Action'
+}
+{
+  title: 'Flex on Java'
+}
+{
+  title: 'Griffon in Action'
+}
+{
+  title: 'OSGi in Depth'
+}
+{
+  title: 'Flexible Rails'
+}
+{
+  title: 'Hello! Flex 4'
+}
+{
+  title: 'Coffeehouse'
+}
+{
+  title: 'Team Foundation Server 2008 in Action'
+}
+{
+  title: 'Brownfield Application Development in .NET'
+}
+{
+  title: 'MongoDB in Action'
+}
+{
+  title: 'Distributed Application Development with PowerBuilder 6.0'
+}
+Type "it" for more
+db.products.drop()
+true
+db.products.insertMany([
+    { "_id" : 1, "name" : "xPhone", "price" : 799, "releaseDate": ISODate("2011-05-14"), "spec" : { "ram" : 4, "screen" : 6.5, "cpu" : 2.66 },"color":["white","black"],"storage":[64,128,256]},
+    { "_id" : 2, "name" : "xTablet", "price" : 899, "releaseDate": ISODate("2011-09-01") , "spec" : { "ram" : 16, "screen" : 9.5, "cpu" : 3.66 },"color":["white","black","purple"],"storage":[128,256,512]},
+    { "_id" : 3, "name" : "SmartTablet", "price" : 899, "releaseDate": ISODate("2015-01-14"), "spec" : { "ram" : 12, "screen" : 9.7, "cpu" : 3.66 },"color":["blue"],"storage":[16,64,128]},
+    { "_id" : 4, "name" : "SmartPad", "price" : 699, "releaseDate": ISODate("2020-05-14"),"spec" : { "ram" : 8, "screen" : 9.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256,1024]},
+    { "_id" : 5, "name" : "SmartPhone", "price" : 599,"releaseDate": ISODate("2022-09-14"), "spec" : { "ram" : 4, "screen" : 9.7, "cpu" : 1.66 },"color":["white","orange","gold","gray"],"storage":[128,256]}
+ ])
+{
+  acknowledged: true,
+  insertedIds: {
+    '0': 1,
+    '1': 2,
+    '2': 3,
+    '3': 4,
+    '4': 5
+  }
+}
+db.products.find({price :{ $eq :899}})
+{
+  _id: 2,
+  name: 'xTablet',
+  price: 899,
+  releaseDate: 2011-09-01T00:00:00.000Z,
+  spec: {
+    ram: 16,
+    screen: 9.5,
+    cpu: 3.66
+  },
+  color: [
+    'white',
+    'black',
+    'purple'
+  ],
+  storage: [
+    128,
+    256,
+    512
+  ]
+}
