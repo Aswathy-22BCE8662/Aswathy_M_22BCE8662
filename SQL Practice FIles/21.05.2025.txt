@@ -1,0 +1,134 @@
+create database tuesday;
+use tuesday;
+
+create table category (
+c_id int primary key,
+cname varchar(50),
+cdetails varchar(100));
+
+insert into category values (1, 'electronics', 'devices and gadgets');
+insert into category values (2, 'books', 'educational materials');
+insert into category values (3, 'furniture', 'tables and chairs');
+insert into category values (4, 'clothing', 'apparel and garments');
+insert into category values (5, 'sports', 'equipment and accessories');
+
+select * from category;
+
+create table products (
+pid int primary key,
+pname varchar(50),
+pdetails varchar(100),
+cid int,
+foreign key (cid) references category(c_id));
+desc products;
+
+insert into products values (1, 'laptop', 'intel i5, 8gb ram', 1);
+insert into products values (2, 'table', 'wooden study table', 3);
+insert into products values (3, 't-shirt', 'cotton round neck', 4);
+insert into products values (4, 'football', 'size 5 synthetic', 5);
+insert into products values (5, 'notebook', '200 pages ruled', 2);
+
+select * from products;
+select * from products where pid between 2 and 4 and cid in (3, 4, 5);
+select * from products where pid not between 2 and 4 and cid in (1, 2);
+select * from products where pname between 'f' and 't';
+select * from products where pname not between 'a' and 'm';
+
+use vit;
+select * from workers;
+select min(salary) from workers;
+select max(salary) from workers;
+select avg(salary) from workers;
+select fname, lname, salary from workers where salary = (select min(salary) from workers);
+select fname, lname, salary from workers where salary = (select max(salary) from workers);
+select count(*) from workers where salary > 55000;
+select sum(salary) from workers where department = 'it';
+select avg(salary) from workers where joining_date= '2020-01-01' ;
+
+create table worker1 (
+worker_id int primary key,
+first_name varchar(50),
+last_name varchar(50),
+salary decimal(10,2),
+joining_date datetime,
+department varchar(50)
+);
+
+insert into worker1 values 
+(001, 'monika', 'arora', 100000, '2014-02-20 09:00:00', 'hr'),
+(002, 'niharika', 'verma', 80000, '2014-06-11 09:00:00', 'admin'),
+(003, 'vishal', 'singhal', 300000, '2014-02-20 09:00:00', 'hr'),
+(004, 'amitabh', 'singh', 500000, '2014-02-20 09:00:00', 'admin'),
+(005, 'vivek', 'bhati', 500000, '2014-06-11 09:00:00', 'admin'),
+(006, 'vipul', 'diwanx', 200000, '2014-06-11 09:00:00', 'account'),
+(007, 'satish', 'kumar', 75000, '2014-01-20 09:00:00', 'account'),
+(008, 'geetika', 'chauhan', 90000, '2014-04-11 09:00:00', 'admin');
+
+select distinct department from worker1;
+
+select first_name from worker1 where department = 'admin'
+union
+select first_name from worker1 where department = 'hr'
+order by first_name;
+
+select first_name from worker1 where salary > 100000
+union all
+select first_name from worker1 where salary < 100000;
+
+select first_name from worker1 where department = 'admin'
+union
+select first_name from worker1 where department = 'account'
+order by first_name;
+
+select first_name from worker1 where salary > 100000
+union all
+select first_name from worker1 where department = 'hr';
+
+select * from workers;
+select Firstname,salary,
+CASE
+    WHEN salary < 3000000 THEN 'Rich people'
+    WHEN salary > 3000000 & salary < 1000000 THEN 'Middle Layer'
+    WHEN salary <10000 & salary > 1000000 THEN 'Poor people'
+    ELSE 'data not found'
+END 
+AS Status_Check_BasedSalary
+FROM workers;
+
+#order by
+select * from worker1 order by first_name;
+select * from worker1 order by salary desc;
+
+select * from worker1 order by department asc, first_name desc;
+select * from worker1 order by joining_date, last_name;
+
+#like
+select * from worker1 where first_name like 'v%';
+select * from worker1 where last_name like '%a';
+select * from worker1 where department like '%c%';
+select * from worker1 where first_name like '_i%';
+select * from worker1 where last_name like '%n_';
+
+create view view_hr_workers as
+select worker_id, first_name, last_name, salary
+from worker1
+where department = 'hr';
+
+create view view_high_salary as
+select first_name, last_name, department
+from worker1
+where salary > 200000;
+
+create view view_joining_2014 as
+select *
+from worker1
+where year(joining_date) = 2014;
+
+select * from view_hr_workers;
+
+drop view view_high_salary;
+
+
+
+
+
