@@ -1,0 +1,83 @@
+
+
+1: Create Data Directories
+
+mkdir -p ~/mongodb-shard/data/shard1/db0
+mkdir -p ~/mongodb-shard/data/shard1/db1
+mkdir -p ~/mongodb-shard/data/shard1/db2
+
+mkdir -p ~/mongodb-shard/data/shard2/db0
+mkdir -p ~/mongodb-shard/data/shard2/db1
+mkdir -p ~/mongodb-shard/data/shard2/db2
+
+mkdir -p ~/mongodb-shard/data/config/db0
+
+2: Start All mongod Instances in Separate Tabs
+
+mongod --port 27022 --dbpath ~/mongodb-shard/data/shard1/db0 --replSet shard1ReplSet --shardsvr --bind_ip localhost
+mongod --port 27023 --dbpath ~/mongodb-shard/data/shard1/db1 --replSet shard1ReplSet --shardsvr --bind_ip localhost
+mongod --port 27024 --dbpath ~/mongodb-shard/data/shard1/db2 --replSet shard1ReplSet --shardsvr --bind_ip localhost
+
+
+mongod --port 27025 --dbpath ~/mongodb-shard/data/shard2/db0 --replSet shard2ReplSet --shardsvr --bind_ip localhost
+mongod --port 27026 --dbpath ~/mongodb-shard/data/shard2/db1 --replSet shard2ReplSet --shardsvr --bind_ip localhost
+mongod --port 27027 --dbpath ~/mongodb-shard/data/shard2/db2 --replSet shard2ReplSet --shardsvr --bind_ip localhost
+
+Config Server:
+
+mongod --configsvr --replSet configReplSet --port 27019 --dbpath ~/mongodb-shard/data/config/db0 --bind_ip localhost
+
+3: Start mongos Router
+
+mongos --configdb configReplSet/localhost:27019 --port 27018 --bind_ip localhost
+
+ 4: Initiate Replica Sets
+
+mongosh --port 27022
+rs.initiate({
+  _id: "shard1ReplSet",
+  members: [
+    { _id: 0, host: "localhost:27022" },
+    { _id: 1, host: "localhost:27023" },
+    { _id: 2, host: "localhost:27024" }
+  ]
+})
+
+
+mongosh --port 27025
+rs.initiate({
+  _id: "shard2ReplSet",
+  members: [
+    { _id: 0, host: "localhost:27025" },
+    { _id: 1, host: "localhost:27026" },
+    { _id: 2, host: "localhost:27027" }
+  ]
+})
+
+
+Config Server
+mongosh --port 27019
+rs.initiate({
+  _id: "configReplSet",
+  configsvr: true,
+  members: [
+    { _id: 0, host: "localhost:27019" }
+  ]
+})
+
+5: Configure Sharding with mongos
+
+mongosh --port 27018
+
+sh.addShard("shard1ReplSet/localhost:27022,localhost:27023,localhost:27024")
+sh.addShard("shard2ReplSet/localhost:27025,localhost:27026,localhost:27027")
+
+sh.enableSharding("testDB")
+sh.shardCollection("testDB.testCollection", { _id: "hashed" })
+
+use testDB
+for (let i = 0; i < 10000; i++) {
+  db.testCollection.insert({ userId: i, data: "Sample data " + i, timestamp: new Date() })
+}
+
+db.testCollection.getShardDistribution()
