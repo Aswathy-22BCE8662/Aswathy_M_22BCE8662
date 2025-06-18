@@ -1,0 +1,33 @@
+
+1. Open Terminal and create data directories
+
+mkdir -p ~/mongodb/data/db0
+mkdir -p ~/mongodb/data/db1
+mkdir -p ~/mongodb/data/db2
+
+2. Start MongoDB replica set instances in different Terminal tabs or windows
+
+mongod --port 27017 --dbpath ~/mongodb/data/db0 --replSet rs0 --bind_ip localhost
+
+mongod --port 27018 --dbpath ~/mongodb/data/db1 --replSet rs0 --bind_ip localhost
+
+mongod --port 27019 --dbpath ~/mongodb/data/db2 --replSet rs0 --bind_ip localhost
+
+3. Connect to the primary instance
+
+mongosh --port 27017
+
+4. Initiate the replica set
+
+rs.initiate({
+  _id: "rs0",
+  members: [
+    { _id: 0, host: "localhost:27017" },
+    { _id: 1, host: "localhost:27018" },
+    { _id: 2, host: "localhost:27019" }
+  ]
+})
+
+5. Check replica set status
+
+rs.status()
